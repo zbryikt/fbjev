@@ -1,0 +1,70 @@
+doctype html
+html(lang="zh-Hant")
+  head
+    meta(charset="utf-8")
+    title fb-jev
+    link(rel="stylesheet", type="text/css", href="css/popup.css")
+  body.fbjev-popup
+    header.hd
+      h1 fb-jev
+      label.sw
+        input#enabled(type="checkbox")
+        span 啟用
+
+    section.fields
+      label
+        span 判讀來源
+        select#provider
+          option(value="mock") mock ( 本地啟發式 )
+          option(value="jev") jev ( typesafe.ai )
+      label
+        span API endpoint
+        input#endpoint(type="text", placeholder="https://api.typesafe.ai/...")
+      label
+        span API key
+        input#apiKey(type="password", placeholder="sk-...")
+      label
+        span model
+        input#model(type="text")
+      label
+        span
+          | 命中門檻
+          b#thval
+        input#threshold(type="range", min="0", max="1", step="0.05")
+      label.sw
+        input#badge(type="checkbox")
+        span 在貼文上顯示標記
+      label.sw
+        input#collapse(type="checkbox")
+        span 命中的貼文淡化並收合
+
+    section.stats
+      h2 本機統計
+      ul
+        li
+          | 判讀
+          b#st-total 0
+          | 則
+        li
+          | AI 生成
+          b#st-ai 0
+        li
+          | 廣告
+          b#st-ad 0
+        li
+          | 網軍
+          b#st-troll 0
+        li
+          | 仇恨
+          b#st-hate 0
+        li
+          | 小白
+          b#st-noob 0
+      button#reset(type="button") 清除統計
+
+    p.msg#msg
+
+    script(type="text/javascript", src="js/lib/log.js")
+    script(type="text/javascript", src="js/lib/config.js")
+    script(type="text/javascript", src="js/lib/analyzer.js")
+    script(type="text/javascript", src="js/popup.js")

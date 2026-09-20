@@ -1,0 +1,18 @@
+{
+  "name": "0921-fb-jev",
+  "version": "1.0.0",
+  "description": "Chrome extension: 即時判讀 FB 貼文是否 AI 生成 / 廣告 / 網軍",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx server -r web -o false",
+    "build": "node -e \"require('@plotdb/srcbuild').lsp({base:'web'}).ready.then(function(){process.exit(0)})\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@plotdb/guides": "github:plotdb/guides#master",
+    "@zbryikt/template": "^2.5.0",
+    "fedep": "^1.9.0"
+  }
+}

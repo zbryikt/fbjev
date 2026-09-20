@@ -1,0 +1,6 @@
+node_modules
+/context/shared
+/web/static
+/web/.view
+/web/.bundle-dep
+.env

@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "fb-jev",
+  "version": "0.0.1",
+  "description": "即時判讀 Facebook 動態牆貼文: AI 生成 / 廣告 / 網軍",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.facebook.com/*",
+    "https://*.typesafe.ai/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.facebook.com/*"
+      ],
+      "js": [
+        "js/lib/log.js",
+        "js/lib/config.js",
+        "js/lib/post.js",
+        "js/lib/analyzer.js",
+        "js/lib/badge.js",
+        "js/content.js"
+      ],
+      "css": [
+        "css/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "fb-jev",
+    "default_popup": "popup.html"
+  }
+}
