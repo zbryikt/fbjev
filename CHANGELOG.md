@@ -11,3 +11,7 @@
    - 命中門檻以上的貼文淡化並收合成一行, 點標記可展開
    - popup 設定面板與本機統計, 欄位改動即存
    - 統一的 `[fbjev]` log 前綴
+ - tweaks:
+   - MIT license
+   - 英文 README
+   - `CLAUDE.md` 移出版控 ( 內容指向內部 guides, 對 public repo 的讀者沒有意義 )

@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@plotdb/guides": "github:plotdb/guides#master",
     "@zbryikt/template": "^2.5.0",

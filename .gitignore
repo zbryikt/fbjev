@@ -4,3 +4,4 @@ node_modules
 /web/.view
 /web/.bundle-dep
 .env
+CLAUDE.md
