@@ -66,6 +66,11 @@ the next post, so a "seen" flag on the element would silently drop everything th
 past. The fingerprint also serves as the cache key, so a post re-mounted during scrolling
 costs nothing.
 
+A "Follow" control in the author row means Facebook suggested this post rather than the
+reader subscribing to it, and that flag is sent along with the body. Short posts are judged
+too — a hook of a few words from a suggested page is exactly the case worth catching — with
+the "See more" button text stripped so it does not pad the length.
+
 Extraction anchors on `data-ad-rendering-role` and `div[data-virtualized]` rather than
 class names, which are minified and change with every Facebook release. All selectors live
 in `web/src/ls/lib/post.ls`; that is the file to fix when a Facebook update breaks things.
@@ -96,11 +101,22 @@ visible text does not help either. No `sponsored` field is sent to the model: a 
 is permanently false would assert "this is not an ad", which is worse than omitting it.
 In practice the model identifies ads from the body text well enough.
 
-Judgement sees one post's text and nothing else. The strongest signals for coordinated
-activity are properties of the page itself — account age, follower count, naming patterns,
-posting frequency — and none of those are in the post.
+Judgement sees the post body, the author name, and whether the post came from a page the
+reader does not follow. That last one is the strongest DOM-level signal available: people
+you actually follow are not the problem. The rest of what would help — account age,
+follower count, posting frequency — lives on the page, not in the post, and is not
+collected yet.
 
-Image-only and video-only posts are skipped; there is no text to judge.
+Image-only and video-only posts are skipped; there is no text to judge. This matters more
+than it sounds: jev accepts text only — images, audio and video are not supported — so for
+a post whose substance is a meme or a screenshot, the most important evidence never reaches
+the model.
+
+Very short posts are judged, but barely on their own content. With little text the scores
+drift toward 0.5, which in `noul` terms means genuine uncertainty rather than "half true".
+What separates them in practice is context outside the body: the account name and whether
+the post came from a page the reader does not follow. Bear that in mind when setting the
+threshold — a value of 0.5 treats "the model does not know" as a hit.
 
 
 ## Development

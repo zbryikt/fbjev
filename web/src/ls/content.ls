@@ -9,7 +9,7 @@ watcher = (opt = {}) ->
     timer: null
     dead: false
     delay: 300
-    minlen: 20        # 短於此長度多半是純圖片/影片貼文, 沒有文字可判讀
+    minlen: 6         # 只擋純圖片/影片貼文。推薦粉專的鉤文常常只有幾個字, 而那正是要抓的
   @ <<< opt
   @init!
   @

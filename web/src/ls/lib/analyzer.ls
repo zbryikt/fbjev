@@ -55,6 +55,11 @@ analyzer.mock = (p) ->
     ret.troll.score = Math.min(1, ret.troll.score + 0.3)
     ret.troll.reason = ((ret.troll.reason or '') + ' 驚嘆號密集').trim!
 
+  # 追蹤中的朋友不會是網軍; 推薦來的就未必
+  if p.suggested
+    ret.troll.score = Math.min(1, ret.troll.score + 0.2)
+    ret.troll.reason = ((ret.troll.reason or '') + ' 未追蹤的推薦來源').trim!
+
   ret
 
 self.fbjev = {} unless self.fbjev?

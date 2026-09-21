@@ -26,7 +26,9 @@ jev.questions =
     type: \noul
     instructions: '這則貼文是否為網軍或內容農場式的操作內容?'
     criteria:
-      "true": '匿名可拋棄式粉專發出的聳動標題、情緒動員、要求轉發、與事實無關的垃圾內容'
+      "true": '匿名可拋棄式粉專發出的聳動標題、情緒動員、要求轉發、與事實無關的垃圾內容。
+        from_suggested_page 為 true ( 使用者沒追蹤、由 FB 推薦而來 ) 時要提高懷疑,
+        帳號名稱像隨機產生 ( 英文加數字 ) 也是訊號'
       "false": '一般使用者的真實發文, 即使立場鮮明'
   hate:
     type: \noul
@@ -46,6 +48,7 @@ jev.payload = (p, cfg) ->
     author: p.author
     text: p.text
     url: p.url
+    "from_suggested_page": p.suggested
   model: cfg.model
   questions: jev.questions
 

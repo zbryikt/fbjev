@@ -14,6 +14,12 @@ post.selectors =
   block: 'div[dir="auto"]'
   permalink: '[data-ad-rendering-role="meta"] a[href], a[href*="/posts/"], a[href*="/permalink/"], a[href*="story_fbid"], a[href*="/share/"]'
 
+# 展開按鈕的文字。留著會讓極短的貼文剛好跨過長度門檻, 也會讓模型把它當成內文的一部分。
+post.tailWords = <[查看更多 顯示更多 See\ more See\ More]>
+
+# 作者列出現「追蹤」= 這是 FB 推薦的、你沒追蹤的來源
+post.suggestWords = <[追蹤 Follow]>
+
 # 沒有 sponsored 欄位是刻意的。畫面上看得到「贊助」, 但它不在任何抓得到的節點裡
 # ( meta 區只有連結預覽的網域, 且是混淆過的字串 ), 而傳一個恆為 false 的旗標給模型,
 # 等於告訴它「這不是廣告」—— 比不傳更糟。是不是廣告交給模型從內文判斷。
@@ -22,12 +28,24 @@ post.selectors =
 # 因為 FB 會把同一段文字包好幾層, 不濾掉會重複。
 post.textOf = (el) ->
   msg = el.querySelector post.selectors.message
-  if msg => return (msg.textContent or '').trim!.slice 0, 2000
+  if msg => return post.trimTail((msg.textContent or '').trim!).slice 0, 2000
   blocks = Array.from(el.querySelectorAll(post.selectors.block))
   leaves = blocks.filter (b) -> not blocks.some (o) -> o != b and b.contains o
   texts = leaves.map (b) -> (b.textContent or '').trim!
   texts = texts.filter (t) -> t.length
   texts.join('\n').slice 0, 2000
+
+post.trimTail = (text) ->
+  ret = text
+  for w in post.tailWords
+    if ret.endsWith w => ret = ret.slice 0, ret.length - w.length
+  ret.replace(/[…\s.]+$/, '').trim!
+
+# 推薦內容是網軍與內容農場最主要的投遞管道 —— 追蹤中的朋友不會是網軍。
+# 所以「這則是推薦來的」本身就是訊號, 要讓模型知道。
+post.isSuggested = (el) ->
+  nodes = Array.from el.querySelectorAll('a[role="link"], div[role="button"]')
+  nodes.some (n) -> post.suggestWords.indexOf((n.textContent or '').trim!) >= 0
 
 post.authorOf = (el) ->
   node = el.querySelector(post.selectors.author) or el.querySelector('h2 a, h3 a, h4 a, strong a')
@@ -51,6 +69,7 @@ post.extract = (el) ->
   text: post.textOf el
   author: post.authorOf el
   url: post.urlOf el
+  suggested: post.isSuggested el
   id: post.fingerprint el
 
 # 回傳還需要處理的貼文單元。
